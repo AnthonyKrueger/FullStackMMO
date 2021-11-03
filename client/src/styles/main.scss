@@ -1,0 +1,37 @@
+.header {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    svg {
+        padding-left: 10vw;
+        font-size: 60px;
+    }
+    .buttonStack {
+        padding-right: 10vw;
+    }
+}
+
+.splashPage {
+    display: flex;
+    justify-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    flex-direction: column;
+    .icon {
+        display: flex;
+        justify-items: center;
+        justify-content: center;
+        padding-bottom: 30px;
+        font-size: 300px;
+    }
+    h1 {
+        padding-bottom: 10px;
+    }
+    .splashButtons {
+        padding-top: 70px;
+        .loginText {
+            padding-top: 10px;
+        }
+    }
+}
