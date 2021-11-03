@@ -2,8 +2,7 @@
 
 
 ## Mechanics and Idea
-----
-    FullStackMMO is planned to be an extremely simplified version of a Massively Multiplayer Online Roleplaying Game built fully with Node.js and React. Users should be able to create an account with an associated character. They should be able to complete tasks and to collect currency, experience, and items. A basic economy and trading system will be implemented to allow user interaction.
+FullStackMMO is planned to be an extremely simplified version of a Massively Multiplayer Online Roleplaying Game built fully with Node.js and React. Users should be able to create an account with an associated character. They should be able to complete tasks and to collect currency, experience, and items. A basic economy and trading system will be implemented to allow user interaction.
 
 ### Base Mechanics
 
@@ -17,7 +16,6 @@
     - Battle random enemies with stats
 
 ## Tech Stack Decisions
-----
 
 ### Frontend
 
@@ -37,7 +35,6 @@
     - AWS S3
 
 ## Gameplan
-----
     1. Data Modeling
         a. User Model
         b. Item Model

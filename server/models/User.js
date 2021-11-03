@@ -73,11 +73,10 @@ const User = sequelize.define('user', {
     freezeTableName: true,
     underscored: true,
     modelName: 'user',
-    instanceMethods: {
-        validPassword(loginPW) {
-            return bcrypt.compareSync(loginPW, this.password);
-        }
-    },
 });
+
+User.prototype.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.password);
+};
 
 module.exports = User;
