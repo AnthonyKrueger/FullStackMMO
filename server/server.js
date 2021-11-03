@@ -2,7 +2,9 @@ const path = require("path")
 const express = require('express')
 const { ApolloServer } = require('apollo-server-express');
 
-const db = require('./config/connection')
+const seedAll = require("./seeds")
+
+const sequelize = require('./config/connection');
 
 const { typeDefs, resolvers } = require('./schemas');
 
@@ -24,8 +26,9 @@ startServer()
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-db.once('open', () => {
-    app.listen(PORT, () => {
+sequelize.sync({ force: true }).then(() => {
+    app.listen(PORT, async () => {
+        await seedAll();
         console.log(`API server running on port ${PORT}!`);
         console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`);
     });
