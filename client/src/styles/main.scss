@@ -1,0 +1,94 @@
+@import "./mixins";
+@import "./colors";
+
+html {
+    background-color: #f5f5f5;
+}
+
+.icon {
+    color: $maindark;
+}
+
+.header {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    svg {
+        padding-left: 10vw;
+        font-size: 60px;
+        color: $maindark;
+    }
+    .buttonStack {
+        padding-right: 10vw;
+    }
+    a {
+        text-decoration: none;
+    }
+}
+
+.splashPage {
+
+    @include center-flex;
+
+    text-align: center;
+
+    padding: 20px;
+    flex-direction: column;
+    .icon {
+        display: flex;
+        justify-items: center;
+        justify-content: center;
+        padding-bottom: 30px;
+        font-size: 300px;
+    }
+    h1 {
+        padding-bottom: 10px;
+    }
+    .splashButtons {
+        padding-top: 70px;
+        a {
+            text-decoration: none;
+        }
+        .loginText {
+            padding-top: 10px;
+            a {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+.signupPage, .loginPage {
+
+    @include center-flex;
+
+    flex-direction: column;
+    justify-items: center;
+    text-align: center;
+
+    .icon {
+        font-size: 250px;
+        margin-left: 30px;
+    }
+
+    .fsmmoText {
+        position: fixed;
+        margin-top: -250px;
+    }
+
+    .loginForm, .signupForm {
+        @include center-flex;
+        flex-direction: column;
+        padding: 20px 30px;
+        width: 40vw;
+        div {
+            margin: 10px 0;
+        }
+    }
+}
+
+.loginPage {
+    .fsmmoText {
+        margin-top: -60px;
+    }
+}
