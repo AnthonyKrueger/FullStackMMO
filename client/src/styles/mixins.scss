@@ -1,0 +1,11 @@
+@mixin center-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin roundeddiv() {
+    @include center-flex;
+    border-radius: 10px;
+    padding: 10px;
+}

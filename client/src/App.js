@@ -11,7 +11,6 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { createTheme, ThemeProvider, responsiveFontSizes } from '@mui/material/styles';
 
-
 // Apollo Imports
 
 import {
@@ -25,16 +24,20 @@ import { ApolloLink } from 'apollo-link';
 import { setContext } from '@apollo/client/link/context';
 
 // Page Imports
-import Header from "./components/Header";
 
 import Splash from "./pages/Splash"
-import { red } from "@mui/material/colors";
+import SignUp from "./pages/SignUp"
+import LoginPage from "./pages/Login"
 
 // MUI Theme Settings
 
 let theme = createTheme({
   palette: {
-    primary: red
+    primary: {
+      main: "#780000"
+    },
+    contrastThreshold: 3,
+    tonalOffset: 0.2
   }
 })
 
@@ -78,13 +81,12 @@ function App() {
   return (
     <ApolloProvider client={client}>
     <ThemeProvider theme={theme}>
-    <Header />
       <Router>
-        <div className="font-main tracking-wide">
           <Switch>
             <Route exact path='/' component={Splash} />
+            <Route path='/signup' component={SignUp} />
+            <Route path='/login' component={LoginPage} />
           </Switch>
-        </div>
       </Router>
     </ThemeProvider>
     </ApolloProvider>
