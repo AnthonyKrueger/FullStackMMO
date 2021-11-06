@@ -28,6 +28,7 @@ import { setContext } from '@apollo/client/link/context';
 import Splash from "./pages/Splash"
 import SignUp from "./pages/SignUp"
 import LoginPage from "./pages/Login"
+import HomePage from "./pages/Home"
 
 // MUI Theme Settings
 
@@ -86,6 +87,7 @@ function App() {
             <Route exact path='/' component={Splash} />
             <Route path='/signup' component={SignUp} />
             <Route path='/login' component={LoginPage} />
+            <Route path='/home' component={HomePage} />
           </Switch>
       </Router>
     </ThemeProvider>
