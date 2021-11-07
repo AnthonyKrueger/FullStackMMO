@@ -1,5 +1,6 @@
 @import "./mixins";
 @import "./colors";
+@import "./include-media";
 
 html {
     background-color: #f5f5f5;
@@ -58,6 +59,10 @@ html {
     }
 }
 
+Main {
+    background-color: #f5f5f5;
+}
+
 .signupPage, .loginPage {
 
     @include center-flex;
@@ -72,23 +77,23 @@ html {
     }
 
     .fsmmoText {
-        position: fixed;
-        margin-top: -250px;
+        margin-bottom: 30px;
+        margin-top: -60px;
     }
 
     .loginForm, .signupForm {
         @include center-flex;
         flex-direction: column;
         padding: 20px 30px;
-        width: 40vw;
+        width: 80vw;
+        margin-bottom: 30px;
         div {
             margin: 10px 0;
+        }
+        @include media('>=tablet') {
+            width: 40vw;
         }
     }
 }
 
-.loginPage {
-    .fsmmoText {
-        margin-top: -60px;
-    }
-}
+

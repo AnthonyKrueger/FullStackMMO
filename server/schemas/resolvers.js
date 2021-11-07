@@ -12,7 +12,21 @@ const resolvers = {
         allItems: async () => {
             const items = await Item.findAll({})
             return items;
+        },
+        user: async (parent, {id}) => {
+            const user = await User.findOne({
+              where: {
+                id: id
+              }
+            })
+            return user;
+        },
+        me: async (parent, args, context) => {
+          console.log(context)
+            if (context.user) {
+              return await User.findOne({ id: context.user.id });
         }
+          },
     },
 
     Mutation: {

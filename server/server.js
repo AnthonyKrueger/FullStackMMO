@@ -26,9 +26,9 @@ startServer()
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-sequelize.sync({ force: false }).then(() => {
+sequelize.sync({ force: true }).then(() => {
     app.listen(PORT, async () => {
-        // await seedAll();
+        await seedAll();
         console.log(`API server running on port ${PORT}!`);
         console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`);
     });
