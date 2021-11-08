@@ -26,6 +26,14 @@ export const GET_USER = gql`
             id
             username
             email
+            level
+            strength
+            endurance
+            speed
+            experience
+            gold
+            health
+            maxhealth
         }
     }
 `

@@ -96,4 +96,13 @@ Main {
     }
 }
 
+.dashboardStats {
+    display: flex;
+    flex-direction: column;
+    @include media('>=tablet') {        
+        justify-content: space-between;
+        flex-direction: row;
+    }
+}
+
 

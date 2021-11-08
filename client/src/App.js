@@ -84,10 +84,10 @@ function App() {
     <ThemeProvider theme={theme}>
       <Router>
           <Switch>
-            <Route exact path='/' component={Splash} />
+            <Route exact path='/splash' component={Splash} />
             <Route path='/signup' component={SignUp} />
             <Route path='/login' component={LoginPage} />
-            <Route path='/home' component={HomePage} />
+            <Route path='/' component={HomePage} />
           </Switch>
       </Router>
     </ThemeProvider>
