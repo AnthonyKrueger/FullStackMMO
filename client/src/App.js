@@ -29,6 +29,7 @@ import Splash from "./pages/Splash"
 import SignUp from "./pages/SignUp"
 import LoginPage from "./pages/Login"
 import HomePage from "./pages/Home"
+import auth from "./utils/auth";
 
 // MUI Theme Settings
 
@@ -63,8 +64,11 @@ const link = ApolloLink.from([errorLink, httpLink]);
 
     // Auth / Context Set Up
 
+const token = localStorage.getItem('id_token');
+if(token != null) {
+  console.log(token)
+}
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('id_token');
   return {
     headers: {
       ...headers,
@@ -84,10 +88,10 @@ function App() {
     <ThemeProvider theme={theme}>
       <Router>
           <Switch>
-            <Route exact path='/' component={Splash} />
+            <Route exact path='/splash' component={Splash} />
             <Route path='/signup' component={SignUp} />
             <Route path='/login' component={LoginPage} />
-            <Route path='/home' component={HomePage} />
+            <Route path='/' component={HomePage} />
           </Switch>
       </Router>
     </ThemeProvider>

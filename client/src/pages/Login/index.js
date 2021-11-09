@@ -24,7 +24,7 @@ export default function LoginPage() {
             throw new Error('Something went wrong!');
           }
           Auth.login(data.login.token);
-          window.location.assign('/home');
+          window.location.assign('/');
         } catch(err) {
           console.error(err);
         }
