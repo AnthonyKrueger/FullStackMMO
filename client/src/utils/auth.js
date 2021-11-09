@@ -6,16 +6,27 @@ class AuthService {
   };
 
   isTokenExpired(token) {
-    const decoded = decode(token);
-    if (decoded.exp < Date.now() / 1000) {
+    try {
+      const decoded = decode(token);
+      if (decoded.exp < Date.now() / 1000) {
+        localStorage.removeItem('id_token');
+        return true;
+      }
+      return false;
+    }
+    catch(error) {
       localStorage.removeItem('id_token');
       return true;
     }
-    return false;
   };
 
   getProfile()  {
-    return decode(this.getToken());
+    const token = this.getToken()
+    if(token != null) {
+      if(!this.isTokenExpired(token)) {
+        return decode(this.getToken());
+      }
+    }
   };
 
   loggedIn() {
@@ -29,7 +40,7 @@ class AuthService {
 
   logout() {
     localStorage.removeItem('id_token');
-    window.location.assign('/');
+    window.location.assign('/splash');
   };
 };
 

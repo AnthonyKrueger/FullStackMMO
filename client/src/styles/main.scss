@@ -99,10 +99,12 @@ Main {
 .dashboardStats {
     display: flex;
     flex-direction: column;
+    div {
+        padding: 5px;
+    }
     @include media('>=tablet') {        
         justify-content: space-between;
         flex-direction: row;
     }
 }
-
 

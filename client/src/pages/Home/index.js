@@ -22,28 +22,29 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import HomeIcon from '@mui/icons-material/Home';
-import { GiAxeSword } from "react-icons/gi"
-import { Card } from '@mui/material';
 
 import Dashboard from './pages/Dashboard';
+import { Button } from '@mui/material';
 
 export default function HomePage() {
 
   const [open, setOpen] = React.useState(false);
   let token = localStorage.getItem('id_token');
 
+  const queryVariable = Auth.getProfile()?.data.id
+
   const { loading, data } = useQuery(GET_USER, {
-    variables: { id: Auth.getProfile().data.id },
+    variables: { id: queryVariable },
     fetchPolicy: "cache-and-network"
   });
 
   const theme = useTheme();
 
-  if (!token) {
+  if (!token || Auth.isTokenExpired(token)) {
     return <Redirect to='/splash' />
   };
+
 
   if (loading) {
     return (
@@ -63,7 +64,6 @@ export default function HomePage() {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      marginLeft: `-${drawerWidth}px`,
       ...(open && {
         transition: theme.transitions.create('margin', {
           easing: theme.transitions.easing.easeOut,
@@ -76,14 +76,13 @@ export default function HomePage() {
 
   const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
-  })(({ theme, open }) => ({
+  })
+  (({ theme, open }) => ({
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
     ...(open && {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: `${drawerWidth}px`,
       transition: theme.transitions.create(['margin', 'width'], {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
@@ -122,9 +121,10 @@ export default function HomePage() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" sx={{flexGrow: 1}} component="div">
             FSMMO
           </Typography>
+          <Button color="inherit" onClick={() => Auth.logout()}>Logout</Button>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -136,7 +136,7 @@ export default function HomePage() {
             boxSizing: 'border-box',
           },
         }}
-        variant="persistent"
+        // variant="persistent"
         anchor="left"
         open={open}
       >
@@ -161,7 +161,7 @@ export default function HomePage() {
         <DrawerHeader />
         <Router>
           <Switch>
-            <Route exact path='/' component={Dashboard} />
+            <Route exact path='/' component={() => (<Dashboard data={data}/>)} />
           </Switch>
       </Router>
       </Main>
