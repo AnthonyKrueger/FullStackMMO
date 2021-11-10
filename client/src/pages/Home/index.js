@@ -25,6 +25,7 @@ import ListItemText from '@mui/material/ListItemText';
 import HomeIcon from '@mui/icons-material/Home';
 
 import Dashboard from './pages/Dashboard';
+import Walking from './pages/Walking';
 import { Button } from '@mui/material';
 
 export default function HomePage() {
@@ -147,13 +148,23 @@ export default function HomePage() {
         </DrawerHeader>
         <Divider />
         <List>
-
-          <ListItem button key="Home">
+        <Link to="/">
+          <ListItem button key="Home" onClick={handleDrawerClose}>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary="Home" />
           </ListItem>
+        </Link>
+
+        <Link to="/walking">
+          <ListItem button key="Walk" onClick={handleDrawerClose}>
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Walk" />
+          </ListItem>
+        </Link>
 
         </List>
       </Drawer>
@@ -162,6 +173,7 @@ export default function HomePage() {
         <Router>
           <Switch>
             <Route exact path='/' component={() => (<Dashboard data={data}/>)} />
+            <Route path='/walking' component={() => (<Walking />)} />
           </Switch>
       </Router>
       </Main>
