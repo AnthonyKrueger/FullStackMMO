@@ -5,50 +5,54 @@ import StrengthIcon from '@mui/icons-material/FitnessCenter'
 import EnduranceIcon from '@mui/icons-material/Shield'
 import SpeedIcon from '@mui/icons-material/DirectionsRun'
 import { red, yellow, green, blue } from '@mui/material/colors';
+import { useSelector } from 'react-redux';
 
-export default function Dashboard(data) {
+export default function Dashboard({ loading }) {
 
-  data = data.data;
+  const state = useSelector(state => {
+    return state;
+  });
 
-    return (
-        <div>
-    <Card sx={{
-          padding: 2,
-          margin: 1
-        }}>
-          {data ?
+  return (
+    <div>
+    {loading ? <p>Loading...</p> :
+    
+    <div>
+      <Card sx={{
+        padding: 2,
+        margin: 1
+      }}>
+          <div>
+            <Typography variant="h4">Welcome back, {state?.username}</Typography>
+            <Typography variant="h6">Level {state?.level}</Typography>
+            <Typography>Experience: {state?.experience}</Typography>
+          </div>
+      </Card>
+      <Card sx={{
+        padding: 2,
+        margin: 1
+      }}>
+          <div className="dashboardStats">
             <div>
-              <Typography variant="h4">Welcome back, {data.user.username}</Typography>
-              <Typography variant="h6">Level {data.user.level}</Typography>
-              <Typography>Experience: {data.user.experience}</Typography>
+              <Typography variant="h6"><HeartIcon sx={{ color: red[500], pt: 1 }} /> Health: {state?.health}/{state?.maxhealth}</Typography>
+              <LinearProgress variant="determinate" value={(state?.health / state?.maxhealth) * 100} />
             </div>
-            : null}
-        </Card>
-        <Card sx={{
-          padding: 2,
-          margin: 1
-        }}>
-          {data ?
-            <div className="dashboardStats">
-              <div>
-                <Typography variant="h6"><HeartIcon sx={{ color: red[500], pt: 1 }} /> Health: {data.user.health}/{data.user.maxhealth}</Typography>
-                <LinearProgress variant="determinate" value={(data.user.health / data.user.maxhealth) * 100} />
-              </div>
-              <div>
-                <Typography variant="h6"><CoinIcon sx={{ color: yellow[500], pt: 1 }} /> Gold: {data.user.gold}</Typography>
-              </div>
-              <div>
-                <Typography variant="h6"><StrengthIcon sx={{ color: yellow[700], pt: 1 }} /> Strength: {data.user.strength}</Typography>
-              </div>
-              <div>
-                <Typography variant="h6"><EnduranceIcon sx={{ color: green[700], pt: 1 }} /> Endurance: {data.user.endurance}</Typography>
-              </div>
-              <div>
-                <Typography variant="h6"><SpeedIcon sx={{ color: blue[700], pt: 1 }} /> Speed: {data.user.speed}</Typography>
-              </div>
+            <div>
+              <Typography variant="h6"><CoinIcon sx={{ color: yellow[500], pt: 1 }} /> Gold: {state?.gold}</Typography>
             </div>
-            : null}
-        </Card>
-        </div>
-    )
+            <div>
+              <Typography variant="h6"><StrengthIcon sx={{ color: yellow[700], pt: 1 }} /> Strength: {state?.strength}</Typography>
+            </div>
+            <div>
+              <Typography variant="h6"><EnduranceIcon sx={{ color: green[700], pt: 1 }} /> Endurance: {state?.endurance}</Typography>
+            </div>
+            <div>
+              <Typography variant="h6"><SpeedIcon sx={{ color: blue[700], pt: 1 }} /> Speed: {state?.speed}</Typography>
+            </div>
+          </div>
+      </Card>
+    </div>
+    }
+    </div>
+  )
 }

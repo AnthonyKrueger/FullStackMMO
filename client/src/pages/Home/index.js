@@ -1,10 +1,13 @@
 import { Redirect } from 'react-router-dom';
 import { useQuery } from "@apollo/client";
 
+import { useSelector, useDispatch } from 'react-redux';
+import { SET_USER_DATA } from '../../utils/actions';
+
 import { GET_USER } from "../../utils/queries"
 
 import Auth from "../../utils/auth";
-import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch, } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -30,7 +33,14 @@ import { Button } from '@mui/material';
 
 export default function HomePage() {
 
+  const state = useSelector(state => {
+    return state;
+  });
+
   const [open, setOpen] = React.useState(false);
+
+  const [userData, setUserData] = React.useState(null)
+
   let token = localStorage.getItem('id_token');
 
   const queryVariable = Auth.getProfile()?.data.id
@@ -40,12 +50,21 @@ export default function HomePage() {
     fetchPolicy: "cache-and-network"
   });
 
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    setUserData(data ? data : null)
+  }, [data])
+
+  React.useEffect(() => {
+      dispatch({type: SET_USER_DATA, user: data?.user})
+  }, [data, dispatch])
+
   const theme = useTheme();
 
   if (!token || Auth.isTokenExpired(token)) {
     return <Redirect to='/splash' />
   };
-
 
   if (loading) {
     return (
@@ -168,15 +187,17 @@ export default function HomePage() {
 
         </List>
       </Drawer>
+      {loading ? <p>Loading...</p> :
       <Main open={open}>
         <DrawerHeader />
         <Router>
           <Switch>
-            <Route exact path='/' component={() => (<Dashboard data={data}/>)} />
-            <Route path='/walking' component={() => (<Walking />)} />
+            <Route exact path='/' component={() => (<Dashboard userData={state} loading={loading} setData={setUserData}/>)} />
+            <Route path='/walking' component={() => (<Walking userData={userData} loading={loading} setData={setUserData}/>)} />
           </Switch>
       </Router>
       </Main>
+      }
     </Box>
   )
 }

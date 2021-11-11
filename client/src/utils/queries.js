@@ -34,6 +34,8 @@ export const GET_USER = gql`
             gold
             health
             maxhealth
+            steps
+            nextStepTime
         }
     }
 `

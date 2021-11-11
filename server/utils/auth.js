@@ -11,7 +11,6 @@ module.exports = {
     if (req.headers.authorization) {
       token = token.split(' ').pop().trim();
     }
-
     if (!token) {
       return req;
     }
@@ -24,6 +23,16 @@ module.exports = {
     }
 
     return req;
+  },
+  verifyUser: async function(token) {
+    try {
+      const {data} = jwt.verify(token, secret, { maxAge: expiration})
+      return data;
+    }
+    catch {
+      return false;
+    }
+
   },
   signToken: function ({ email, username, id }) {
     const payload = { email, username, id };
