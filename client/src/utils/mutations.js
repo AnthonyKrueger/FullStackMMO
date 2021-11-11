@@ -27,10 +27,9 @@ export const CREATE_USER = gql`
 export const TAKE_STEP = gql`
     mutation takeStep($token: ID!) {
         takeStep(token: $token) {
-            username
-            steps
             experience
             gold
+            message
         }
     }
 `

@@ -33,6 +33,12 @@ const typeDefs = gql`
         itemId: String
     }
 
+    type Step {
+        experience: Int,
+        gold: Int,
+        message: String
+    }
+
     type Auth {
          token: ID!
          user: User
@@ -48,7 +54,7 @@ const typeDefs = gql`
     type Mutation {
         addUser(username: String!, email: String!, password: String!): Auth
         login(email: String!, password: String!): Auth
-        takeStep(token: ID!): User
+        takeStep(token: ID!): Step
     }
 `
 

@@ -70,10 +70,14 @@ const resolvers = {
                   id: data.id
                 }
               })
+              const addedExperience = 10;
+              const addedGold = 10;
+              user.gold += addedGold;
+              user.experience += addedExperience;
               user.steps += 1;
               user.save()
               console.log(user.dataValues)
-              return(user.dataValues)
+              return({gold: addedGold, experience: addedExperience, message: "You Took A Step"})
             }
             else {
               return "nope"

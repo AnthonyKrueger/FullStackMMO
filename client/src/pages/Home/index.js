@@ -1,7 +1,7 @@
 import { Redirect } from 'react-router-dom';
 import { useQuery } from "@apollo/client";
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { SET_USER_DATA } from '../../utils/actions';
 
 import { GET_USER } from "../../utils/queries"
@@ -33,13 +33,7 @@ import { Button } from '@mui/material';
 
 export default function HomePage() {
 
-  const state = useSelector(state => {
-    return state;
-  });
-
   const [open, setOpen] = React.useState(false);
-
-  const [userData, setUserData] = React.useState(null)
 
   let token = localStorage.getItem('id_token');
 
@@ -53,11 +47,7 @@ export default function HomePage() {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    setUserData(data ? data : null)
-  }, [data])
-
-  React.useEffect(() => {
-      dispatch({type: SET_USER_DATA, user: data?.user})
+    dispatch({type: SET_USER_DATA, user: data?.user})
   }, [data, dispatch])
 
   const theme = useTheme();
@@ -192,8 +182,8 @@ export default function HomePage() {
         <DrawerHeader />
         <Router>
           <Switch>
-            <Route exact path='/' component={() => (<Dashboard userData={state} loading={loading} setData={setUserData}/>)} />
-            <Route path='/walking' component={() => (<Walking userData={userData} loading={loading} setData={setUserData}/>)} />
+            <Route exact path='/' component={() => (<Dashboard loading={loading}/>)} />
+            <Route path='/walking' component={() => (<Walking loading={loading}/>)} />
           </Switch>
       </Router>
       </Main>

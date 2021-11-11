@@ -13,7 +13,8 @@ const initialState = {
     health: 0,
     maxHealth: 0,
     gold: 0,
-    steps: 0
+    steps: 0,
+    stepMessage: ""
   };
 
 
@@ -23,7 +24,10 @@ const initialState = {
           case TAKE_STEP_ACTION:
               return {
                   ...state,
-                  steps: state.steps + 1
+                  steps: state.steps + 1,
+                  gold: state.gold + action.gold,
+                  experience: state.experience + action.experience,
+                  stepMessage: action.stepMessage
               };
 
           case SET_USER_DATA:

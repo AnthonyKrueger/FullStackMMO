@@ -2,11 +2,11 @@ import { useMutation } from "@apollo/client";
 import { Button, Card, LinearProgress, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { TAKE_STEP } from "../../../../utils/mutations";
-import { SET_USER_DATA } from "../../../../utils/actions";
+import { TAKE_STEP_ACTION } from "../../../../utils/actions";
 import React from "react"
 import { useSelector, useDispatch } from "react-redux";
 
-export default function Walking({userData, loading, setData}) {
+export default function Walking({loading}) {
 
     const state = useSelector(state => {
         return state;
@@ -22,7 +22,7 @@ export default function Walking({userData, loading, setData}) {
         const { data } = await takeStep({
             variables: {token: token}
         })
-        dispatch({type: SET_USER_DATA, user: data.takeStep})
+        dispatch({type: TAKE_STEP_ACTION, gold: data.takeStep.gold, experience: data.takeStep.experience, stepMessage: data.takeStep.message})
     }
 
     function StepCounter({steps}) {
@@ -42,7 +42,7 @@ export default function Walking({userData, loading, setData}) {
                     <StepCounter steps={state?.steps} />
                 </Box>
                 <Box sx={{ height: 200, width: "90%", backgroundColor: "gray", borderRadius: 3 }}>
-                    <p>Walking Here</p>
+                    <p>{state?.stepMessage}</p>
                 </Box>
                 <Box>
                     <Button variant="contained" onClick={() => stepClick()} sx={{paddingX: 5, marginBottom: 1, paddingY: 2, marginTop: 4}}>Take A Step</Button>
