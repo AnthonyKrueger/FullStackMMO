@@ -22,11 +22,18 @@ const initialState = {
       switch(action.type) {
 
           case TAKE_STEP_ACTION:
+              let addedSteps = 1;
+              if(action.stepMessage === "You Must Wait to Take A Step!") {
+                  addedSteps = 0;
+              }
               return {
                   ...state,
-                  steps: state.steps + 1,
-                  gold: state.gold + action.gold,
-                  experience: state.experience + action.experience,
+                  steps: state.steps + addedSteps,
+                  gold: action.gold,
+                  level: action.level,
+                  levelPoints: action.levelPoints,
+                  nextLevel: action.nextLevel,
+                  experience: action.experience,
                   stepMessage: action.stepMessage
               };
 

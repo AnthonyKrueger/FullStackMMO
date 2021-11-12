@@ -16,6 +16,8 @@ const typeDefs = gql`
         maxhealth: Int
         steps: Int
         nextStepTime: String
+        levelPoints: Int
+        nextLevel: Int
     }
 
     type Item {
@@ -34,9 +36,13 @@ const typeDefs = gql`
     }
 
     type Step {
-        experience: Int,
-        gold: Int,
+        experience: Int
+        gold: Int
         message: String
+        level: Int
+        levelPoints: Int
+        nextLevel: Int
+        item: String
     }
 
     type Auth {

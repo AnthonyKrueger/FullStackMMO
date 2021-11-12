@@ -36,6 +36,8 @@ export const GET_USER = gql`
             maxhealth
             steps
             nextStepTime
+            levelPoints
+            nextLevel
         }
     }
 `

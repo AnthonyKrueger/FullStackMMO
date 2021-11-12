@@ -30,6 +30,10 @@ export const TAKE_STEP = gql`
             experience
             gold
             message
+            level
+            levelPoints
+            nextLevel
+            item
         }
     }
 `

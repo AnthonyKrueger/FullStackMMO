@@ -25,7 +25,7 @@ export default function Dashboard({ loading }) {
           <div>
             <Typography variant="h4">Welcome back, {state?.username}</Typography>
             <Typography variant="h6">Level {state?.level}</Typography>
-            <Typography>Experience: {state?.experience}</Typography>
+            <Typography>Experience: {state?.experience} / {state?.nextLevel}</Typography>
           </div>
       </Card>
       <Card sx={{

@@ -1,6 +1,7 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Item} = require("../models")
+const { User, Item, UserItem} = require("../models")
 const { signToken, verifyUser } = require('../utils/auth');
+const {nextLevel, addExp, addGold, chooseStepEvent} = require("../utils/gameFunctions")
 
 const resolvers = {
     Query: {
@@ -68,19 +69,48 @@ const resolvers = {
               const user = await User.findOne({
                 where: {
                   id: data.id
-                }
+                },
+                include: [{model: UserItem, include: Item}]
               })
-              const addedExperience = 10;
-              const addedGold = 10;
-              user.gold += addedGold;
-              user.experience += addedExperience;
-              user.steps += 1;
-              user.save()
-              console.log(user.dataValues)
-              return({gold: addedGold, experience: addedExperience, message: "You Took A Step"})
-            }
-            else {
-              return "nope"
+              let message = "";
+              let itemLoot = null;
+              if(Date.now() >= user.nextStepTime) {
+                message = "You Took A Step!"
+                const event = chooseStepEvent();
+                if(event.gold) {
+                  user.gold += addGold(user.level);
+                }
+                if(event.exp) {
+                  user.experience += addExp(user.level);
+                }
+                if(event.item) {
+                  const newItem = await UserItem.create({
+                    itemId: 1,
+                    userId: user.id
+                  })
+                  const givenItem = await UserItem.findOne({
+                    where: {
+                      id: newItem.id
+                    },
+                    include: [Item]
+                  })
+                  itemLoot = `${givenItem.item.name} Level ${givenItem.item.level}`
+                }
+                if(user.experience >= user.nextLevel) {
+                  user.experience -= user.nextLevel
+                  user.levelPoints += 1;
+                  user.level += 1;
+                  user.nextLevel = nextLevel(user.level)
+                }
+
+                user.steps += 1;
+                user.nextStepTime = Date.now() + 3000
+                user.save()
+              }
+              else {
+                message = "You Must Wait to Take A Step!"
+              }
+              return ({gold: user.gold, nextLevel: user.nextLevel, experience: user.experience, level: user.level, levelPoints: user.levelPoints, message: message, item: itemLoot})
             }
           }
     }

@@ -70,6 +70,14 @@ const User = sequelize.define('user', {
     nextStepTime: {
         type: Sequelize.STRING,
         defaultValue: now
+    },
+    levelPoints: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+    },
+    nextLevel: {
+        type: Sequelize.INTEGER,
+        defaultValue: 100
     }
 }, {
     hooks: {

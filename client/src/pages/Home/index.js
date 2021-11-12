@@ -26,6 +26,9 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import HomeIcon from '@mui/icons-material/Home';
+import WalkIcon from '@mui/icons-material/DirectionsRun'
+
+import {GiAxeSword} from "react-icons/gi"
 
 import Dashboard from './pages/Dashboard';
 import Walking from './pages/Walking';
@@ -127,11 +130,12 @@ export default function HomePage() {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
+            sx={{ mr: 2}}
           >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" sx={{flexGrow: 1}} component="div">
+            <GiAxeSword />
             FSMMO
           </Typography>
           <Button color="inherit" onClick={() => Auth.logout()}>Logout</Button>
@@ -169,12 +173,11 @@ export default function HomePage() {
         <Link to="/walking">
           <ListItem button key="Walk" onClick={handleDrawerClose}>
             <ListItemIcon>
-              <HomeIcon />
+              <WalkIcon />
             </ListItemIcon>
             <ListItemText primary="Walk" />
           </ListItem>
         </Link>
-
         </List>
       </Drawer>
       {loading ? <p>Loading...</p> :
