@@ -5,7 +5,6 @@ import { TAKE_STEP } from "../../../../utils/mutations";
 import { TAKE_STEP_ACTION } from "../../../../utils/actions";
 import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux";
-import CoinIcon from '@mui/icons-material/MonetizationOn'
 
 export default function Walking({loading}) {
 
@@ -34,7 +33,7 @@ export default function Walking({loading}) {
     useEffect(() => {
         let myInterval = setInterval(() => {
             if(countDown < 100) {
-                setCountDown(countDown + 3)
+                setCountDown(countDown + 2.88)
             }
             else {
                 setButtonState(false)
@@ -47,6 +46,7 @@ export default function Walking({loading}) {
     }, [countDown])
 
     async function stepClick() {
+        console.log(state)
         const { data } = await takeStep({
             variables: {token: token}
         })

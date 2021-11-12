@@ -11,6 +11,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar from '@mui/material/AppBar';
@@ -27,12 +28,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import HomeIcon from '@mui/icons-material/Home';
 import WalkIcon from '@mui/icons-material/DirectionsRun'
+import InventoryIcon from '@mui/icons-material/Backpack'
 
 import {GiAxeSword} from "react-icons/gi"
 
 import Dashboard from './pages/Dashboard';
 import Walking from './pages/Walking';
-import { Button } from '@mui/material';
+import Inventory from './pages/Inventory';
+
 
 export default function HomePage() {
 
@@ -58,14 +61,6 @@ export default function HomePage() {
   if (!token || Auth.isTokenExpired(token)) {
     return <Redirect to='/splash' />
   };
-
-  if (loading) {
-    return (
-      <div className="loader">
-        <h3>Loading...</h3>
-      </div>
-    )
-  }
 
   const drawerWidth = 240;
 
@@ -178,6 +173,16 @@ export default function HomePage() {
             <ListItemText primary="Walk" />
           </ListItem>
         </Link>
+
+        <Link to="/inventory">
+          <ListItem button key="Inventory" onClick={handleDrawerClose}>
+            <ListItemIcon>
+              <InventoryIcon />
+            </ListItemIcon>
+            <ListItemText primary="Inventory" />
+          </ListItem>
+        </Link>
+
         </List>
       </Drawer>
       {loading ? <p>Loading...</p> :
@@ -187,6 +192,7 @@ export default function HomePage() {
           <Switch>
             <Route exact path='/' component={() => (<Dashboard loading={loading}/>)} />
             <Route path='/walking' component={() => (<Walking loading={loading}/>)} />
+            <Route path='/inventory' component={() => (<Inventory/>)} />
           </Switch>
       </Router>
       </Main>

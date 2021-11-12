@@ -18,6 +18,7 @@ const typeDefs = gql`
         nextStepTime: String
         levelPoints: Int
         nextLevel: Int
+        useritems: [UserItem]
     }
 
     type Item {
@@ -33,6 +34,7 @@ const typeDefs = gql`
         id: ID!
         userId: String
         itemId: String
+        item: Item
     }
 
     type Step {

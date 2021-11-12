@@ -14,13 +14,16 @@ const resolvers = {
             const items = await Item.findAll({})
             return items;
         },
-        user: async (parent, {id}, context) => {
+        user: async (parent, {id}) => {
             const user = await User.findOne({
               where: {
                 id: id
-              }
+              },
+              include: [{
+                model: UserItem,
+                include:[Item]
+              }]
             })
-            console.log(context)
             return user;
         },
         me: async (parent, args, context) => {
@@ -63,6 +66,7 @@ const resolvers = {
       
             return { token, user };
           },
+          
           takeStep: async (parent, {token}) => {
             const data = await verifyUser(token)
             if(data) {
