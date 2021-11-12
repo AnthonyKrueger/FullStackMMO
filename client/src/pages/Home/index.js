@@ -1,10 +1,13 @@
 import { Redirect } from 'react-router-dom';
 import { useQuery } from "@apollo/client";
 
+import { useDispatch } from 'react-redux';
+import { SET_USER_DATA } from '../../utils/actions';
+
 import { GET_USER } from "../../utils/queries"
 
 import Auth from "../../utils/auth";
-import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch, } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -23,13 +26,18 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import HomeIcon from '@mui/icons-material/Home';
+import WalkIcon from '@mui/icons-material/DirectionsRun'
+
+import {GiAxeSword} from "react-icons/gi"
 
 import Dashboard from './pages/Dashboard';
+import Walking from './pages/Walking';
 import { Button } from '@mui/material';
 
 export default function HomePage() {
 
   const [open, setOpen] = React.useState(false);
+
   let token = localStorage.getItem('id_token');
 
   const queryVariable = Auth.getProfile()?.data.id
@@ -39,12 +47,17 @@ export default function HomePage() {
     fetchPolicy: "cache-and-network"
   });
 
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch({type: SET_USER_DATA, user: data?.user})
+  }, [data, dispatch])
+
   const theme = useTheme();
 
   if (!token || Auth.isTokenExpired(token)) {
     return <Redirect to='/splash' />
   };
-
 
   if (loading) {
     return (
@@ -117,11 +130,12 @@ export default function HomePage() {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
+            sx={{ mr: 2}}
           >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" sx={{flexGrow: 1}} component="div">
+            <GiAxeSword />
             FSMMO
           </Typography>
           <Button color="inherit" onClick={() => Auth.logout()}>Logout</Button>
@@ -147,24 +161,36 @@ export default function HomePage() {
         </DrawerHeader>
         <Divider />
         <List>
-
-          <ListItem button key="Home">
+        <Link to="/">
+          <ListItem button key="Home" onClick={handleDrawerClose}>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary="Home" />
           </ListItem>
+        </Link>
 
+        <Link to="/walking">
+          <ListItem button key="Walk" onClick={handleDrawerClose}>
+            <ListItemIcon>
+              <WalkIcon />
+            </ListItemIcon>
+            <ListItemText primary="Walk" />
+          </ListItem>
+        </Link>
         </List>
       </Drawer>
+      {loading ? <p>Loading...</p> :
       <Main open={open}>
         <DrawerHeader />
         <Router>
           <Switch>
-            <Route exact path='/' component={() => (<Dashboard data={data}/>)} />
+            <Route exact path='/' component={() => (<Dashboard loading={loading}/>)} />
+            <Route path='/walking' component={() => (<Walking loading={loading}/>)} />
           </Switch>
       </Router>
       </Main>
+      }
     </Box>
   )
 }

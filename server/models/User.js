@@ -2,6 +2,8 @@ const Sequelize = require('sequelize');
 const bcrypt = require('bcrypt');
 const sequelize = require('../config/connection');
 
+const now = Date.now().toString()
+
 const User = sequelize.define('user', {
     id: {
         type: Sequelize.UUID,
@@ -61,6 +63,22 @@ const User = sequelize.define('user', {
         type: Sequelize.INTEGER,
         defaultValue: 10
     },
+    steps: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+    },
+    nextStepTime: {
+        type: Sequelize.STRING,
+        defaultValue: now
+    },
+    levelPoints: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+    },
+    nextLevel: {
+        type: Sequelize.INTEGER,
+        defaultValue: 100
+    }
 }, {
     hooks: {
         async beforeCreate(newUserData) {

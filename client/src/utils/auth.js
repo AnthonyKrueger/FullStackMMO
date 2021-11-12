@@ -24,7 +24,7 @@ class AuthService {
     const token = this.getToken()
     if(token != null) {
       if(!this.isTokenExpired(token)) {
-        return decode(this.getToken());
+        return decode(token);
       }
     }
   };

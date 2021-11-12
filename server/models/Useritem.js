@@ -12,7 +12,7 @@ const UserItem = sequelize.define('useritem', {
         type: Sequelize.UUID
     },
     itemId: {
-        type: Sequelize.UUID
+        type: Sequelize.INTEGER
     }
 }, {
     sequelize,

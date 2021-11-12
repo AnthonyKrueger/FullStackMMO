@@ -23,13 +23,17 @@ import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import { setContext } from '@apollo/client/link/context';
 
+// Redux
+
+import { Provider } from 'react-redux';
+import store from "./store"
+
 // Page Imports
 
 import Splash from "./pages/Splash"
 import SignUp from "./pages/SignUp"
 import LoginPage from "./pages/Login"
 import HomePage from "./pages/Home"
-import auth from "./utils/auth";
 
 // MUI Theme Settings
 
@@ -87,12 +91,14 @@ function App() {
     <ApolloProvider client={client}>
     <ThemeProvider theme={theme}>
       <Router>
+      <Provider store={store}>
           <Switch>
             <Route exact path='/splash' component={Splash} />
             <Route path='/signup' component={SignUp} />
             <Route path='/login' component={LoginPage} />
             <Route path='/' component={HomePage} />
           </Switch>
+      </Provider>
       </Router>
     </ThemeProvider>
     </ApolloProvider>
