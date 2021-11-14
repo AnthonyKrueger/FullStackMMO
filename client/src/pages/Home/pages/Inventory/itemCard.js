@@ -3,6 +3,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import React from "react"
+import CoinIcon from '@mui/icons-material/MonetizationOn'
+
+import {GiBroadsword} from "react-icons/gi"
+import { Box } from "@mui/system";
 
 export default function ItemCard({item}) {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -14,15 +18,13 @@ export default function ItemCard({item}) {
         setAnchorEl(null);
     };
     return(
-        <Grid item lg={2} md={3} xs={4}>
+        <Grid item lg={3} md={4} sm={6} xs={12}>
         <Card>
             <CardHeader
-                title={item.item.name}
-                subheader={`Level ${item.item.level} ${item.item.type}`}
-            />
-            <CardContent sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography>{item.item.stat}</Typography>
-                <MenuIcon
+                title={item.name}
+                subheader={`Level ${item.level} ${item.type}`}
+                action={
+                    <MenuIcon
                 sx={{"&:hover": {
                     cursor: "pointer"
                 }}}
@@ -31,6 +33,16 @@ export default function ItemCard({item}) {
                     aria-expanded={open ? 'true' : undefined}
                     onClick={handleClick}
                 />
+                }
+            />
+            <CardContent>
+            <Box sx={{display: "flex", justifyContent: "center", fontSize:{xs: 70, sm: 70, md: 70}, paddingBottom: 5}}>
+                <GiBroadsword />
+            </Box>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography>{item.stat}</Typography>
+                <Typography>{item.value}<CoinIcon sx={{color: "yellow", fontSize: 17}} /></Typography>
+                <Typography>x{item.quantity}</Typography>
                 <Menu
                     anchorEl={anchorEl}
                     open={open}
@@ -49,6 +61,7 @@ export default function ItemCard({item}) {
                     <MenuItem onClick={handleClose}>Trash</MenuItem>
                     <MenuItem onClick={handleClose}>Gift</MenuItem>
                 </Menu>
+            </Box>
             </CardContent>
         </Card>
     </Grid>

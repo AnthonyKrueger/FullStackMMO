@@ -1,3 +1,5 @@
+const { User, Item, UserItem} = require("../models")
+
 function nextLevel(level) {
     const exponent = 1.3
     const baseXP = 100
@@ -65,9 +67,20 @@ function chooseStepEvent() {
     return event;
 }
 
+async function itemDrop(user) {
+    const itemList = await Item.findAll()
+    let rng = Math.floor(Math.random() * itemList.length)
+    const newItem = UserItem.create({
+        userId: user.id,
+        itemId: itemList[rng].id
+    })
+    return newItem;
+}
+
 module.exports = {
     nextLevel,
     addExp,
     addGold,
-    chooseStepEvent
+    chooseStepEvent,
+    itemDrop
 }

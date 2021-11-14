@@ -1,4 +1,3 @@
-import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { useQuery } from "@apollo/client";
@@ -10,7 +9,7 @@ import { GET_USER } from "../../../../utils/queries"
 
 import Auth from "../../../../utils/auth";
 
-import ItemCard from "./itemCard";
+import ItemList from "./itemList"
 
 export default function Inventory() {
 
@@ -33,15 +32,9 @@ export default function Inventory() {
 
     return (
         <Box sx={{ paddingX: {sm: 0, lg:10} }}>
-            <Grid container spacing={2}>
                 {itemState !== undefined ?
-                    itemState.map(item => {
-                        return (
-                            <ItemCard item={item} />
-                        )
-                    })
+                    <ItemList items={itemState} />
                     : null}
-            </Grid>
         </Box>
     )
 }

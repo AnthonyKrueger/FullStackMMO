@@ -1,7 +1,7 @@
 const { AuthenticationError } = require('apollo-server-express');
 const { User, Item, UserItem} = require("../models")
 const { signToken, verifyUser } = require('../utils/auth');
-const {nextLevel, addExp, addGold, chooseStepEvent} = require("../utils/gameFunctions")
+const {nextLevel, addExp, addGold, chooseStepEvent, itemDrop} = require("../utils/gameFunctions")
 
 const resolvers = {
     Query: {
@@ -88,10 +88,7 @@ const resolvers = {
                   user.experience += addExp(user.level);
                 }
                 if(event.item) {
-                  const newItem = await UserItem.create({
-                    itemId: 1,
-                    userId: user.id
-                  })
+                  const newItem = await itemDrop(user)
                   const givenItem = await UserItem.findOne({
                     where: {
                       id: newItem.id
