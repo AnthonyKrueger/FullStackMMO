@@ -37,3 +37,22 @@ export const TAKE_STEP = gql`
         }
     }
 `
+
+export const SELL_ITEM = gql `
+    mutation sellItem($token: ID!, $userItemId: ID!, $quantity: Int!) {
+        sellItem(token: $token, userItemId: $userItemId, quantity: $quantity) {
+            gold
+            useritems {
+                id
+                quantity
+                item {
+                    name
+                    type
+                    level
+                    value
+                    stat
+                }
+            }
+        }
+    }
+`

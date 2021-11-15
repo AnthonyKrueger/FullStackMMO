@@ -15,20 +15,25 @@ export default function Inventory() {
 
     const queryVariable = Auth.getProfile()?.data.id
 
-    const { data } = useQuery(GET_USER, {
+    const { data, refetch } = useQuery(GET_USER, {
         variables: { id: queryVariable },
         fetchPolicy: "cache-and-network"
     });
 
     const dispatch = useDispatch();
 
+    const itemState = useSelector(state => {
+        return state.useritems;
+    });
+
     React.useEffect(() => {
         dispatch({ type: SET_USER_DATA, user: data?.user })
     }, [data, dispatch])
 
-    const itemState = useSelector(state => {
-        return state.useritems;
-    });
+    React.useEffect(() => {
+        refetch()
+    }, [itemState, refetch])
+
 
     return (
         <Box sx={{ paddingX: {sm: 0, lg:10} }}>

@@ -113,6 +113,53 @@ const resolvers = {
               }
               return ({gold: user.gold, nextLevel: user.nextLevel, experience: user.experience, level: user.level, levelPoints: user.levelPoints, message: message, item: itemLoot})
             }
+            else {
+              throw new AuthenticationError('Invalid Token');
+            }
+          },
+
+          sellItem: async (parent, {token, userItemId, quantity}) => {
+            const userData = await verifyUser(token)
+            let goldGain = 0;
+            if(userData) {
+              const user = await User.findOne({
+                where: {
+                  id: userData.id
+                },
+                include: [{model: UserItem, include: [Item]}]
+              })
+              const userItem = await UserItem.findOne({
+                where: {
+                  userId: user.id,
+                  id: userItemId
+                },
+                include: [Item]
+              })
+              if(userItem !== null) {
+                if(userItem.quantity >= quantity) {
+                  userItem.quantity -= quantity
+                  goldGain += (userItem.item.value * quantity)
+                  user.gold += goldGain
+                  if(userItem.quantity > 0) {
+                    await userItem.save()
+                  }
+                  else {
+                    await userItem.destroy()
+                  }
+                  await user.save()
+                  return user;
+                }
+                else {
+                  throw new AuthenticationError('Quantity too High');
+                }
+              }
+              else {
+                throw new AuthenticationError('Invalid Item');
+              }
+            }
+            else {
+              throw new AuthenticationError('Invalid Token');
+            }
           }
     }
 };

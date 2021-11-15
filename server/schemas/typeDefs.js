@@ -35,6 +35,7 @@ const typeDefs = gql`
         userId: String
         itemId: String
         item: Item
+        quantity: Int
     }
 
     type Step {
@@ -63,6 +64,7 @@ const typeDefs = gql`
         addUser(username: String!, email: String!, password: String!): Auth
         login(email: String!, password: String!): Auth
         takeStep(token: ID!): Step
+        sellItem(token: ID!, userItemId: ID!, quantity: Int!): User
     }
 `
 

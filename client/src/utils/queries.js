@@ -40,6 +40,7 @@ export const GET_USER = gql`
             nextLevel
             useritems {
                 id
+                quantity
                 item {
                     name
                     type

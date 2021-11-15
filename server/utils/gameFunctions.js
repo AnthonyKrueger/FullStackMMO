@@ -29,25 +29,21 @@ function addExp(level) {
 }
 
 function addGold(level) {
-    let gain = 0;
+    let baseGain = 2
     let rng = Math.floor(Math.random() * 100)
     if(rng <= 60) {
-        let baseGain = (3 * level)
-        gain = Math.floor(Math.random() * baseGain + (level))
+        baseGain = (3 * level)
     }
     if(rng > 60) {
-        let baseGain = (5 * level)
-        gain = Math.floor(Math.random() * baseGain + (level))
+        baseGain = (5 * level)
     }
     if(rng > 70) {
-        let baseGain = (7 * level)
-        gain = Math.floor(Math.random() * baseGain + (level))
+        baseGain = (7 * level)
     }
     if(rng > 95) {
-        let baseGain = (10 * level)
-        gain = Math.floor(Math.random() * baseGain + (level))
+       baseGain = (10 * level)
     }
-    return (gain)
+    return (Math.floor(Math.random() * baseGain + (level)))
 }
 
 function chooseStepEvent() {
@@ -70,11 +66,24 @@ function chooseStepEvent() {
 async function itemDrop(user) {
     const itemList = await Item.findAll()
     let rng = Math.floor(Math.random() * itemList.length)
-    const newItem = UserItem.create({
+    console.log(rng)
+    const searchedItem = await UserItem.findOne({
+        where: {
         userId: user.id,
         itemId: itemList[rng].id
-    })
-    return newItem;
+    }})
+    if(searchedItem === null) {
+        const newItem = await UserItem.create({
+            userId: user.id,
+            itemId: itemList[rng].id
+        })
+        return newItem;
+    }
+    else {
+        searchedItem.quantity += 1;
+        await searchedItem.save()
+        return searchedItem;
+    }
 }
 
 module.exports = {
