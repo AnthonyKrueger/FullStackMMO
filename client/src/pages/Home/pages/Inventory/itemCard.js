@@ -48,8 +48,8 @@ export default function ItemCard({item}) {
         setAnchorEl(null);
     };
     return(
-        <Grid item lg={3} md={4} sm={6} xs={12}>
-        <Card>
+        <Grid item xl={2} lg={3} md={4} sm={12} xs={6}>
+        <Card sx={{backgroundColor: "#c2c2c2"}}>
             <CardHeader
                 title={item.item.name}
                 subheader={`Level ${item.item.level} ${item.item.type}`}

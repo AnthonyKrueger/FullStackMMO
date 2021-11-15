@@ -39,8 +39,6 @@ import Inventory from './pages/Inventory';
 
 export default function HomePage() {
 
-  const [open, setOpen] = React.useState(false);
-
   let token = localStorage.getItem('id_token');
 
   const queryVariable = Auth.getProfile()?.data.id
@@ -63,6 +61,120 @@ export default function HomePage() {
   };
 
   const drawerWidth = 240;
+
+function ResponsiveDrawer(props) {
+  const { window } = props;
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const drawer = (
+    <div>
+        <DrawerHeader>
+        {mobileOpen ? 
+          <IconButton onClick={handleDrawerToggle}>
+            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          </IconButton>
+          : null
+        }
+        </DrawerHeader>
+        <Divider />
+        <List>
+        <Link to="/">
+          <ListItem button key="Home">
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItem>
+        </Link>
+
+        <Link to="/walking">
+          <ListItem button key="Walk">
+            <ListItemIcon>
+              <WalkIcon />
+            </ListItemIcon>
+            <ListItemText primary="Walk" />
+          </ListItem>
+        </Link>
+
+        <Link to="/inventory">
+          <ListItem button key="Inventory">
+            <ListItemIcon>
+              <InventoryIcon />
+            </ListItemIcon>
+            <ListItemText primary="Inventory" />
+          </ListItem>
+        </Link>
+
+        </List>
+    </div>
+  );
+
+  const container = window !== undefined ? () => window().document.body : undefined;
+
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <AppBar position="fixed"
+        sx={{
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          ml: { sm: `${drawerWidth}px` },
+        }}>
+        <Toolbar>
+        <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: 'none' } }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" sx={{flexGrow: 1}} component="div">
+            <GiAxeSword />
+            FSMMO
+          </Typography>
+          <Button color="inherit" onClick={() => Auth.logout()}>Logout</Button>
+        </Toolbar>
+      </AppBar>
+      <Box
+        component="nav"
+        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        aria-label="mailbox folders"
+      >
+        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+        <Drawer
+          container={container}
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: 'block', sm: 'none' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          }}
+        >
+          {drawer}
+        </Drawer>
+        <Drawer
+          variant="permanent"
+          sx={{
+            display: { xs: 'none', sm: 'block' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          }}
+          open
+        >
+          {drawer}
+        </Drawer>
+      </Box>
+    </Box>
+  );
+}
 
   const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
@@ -107,86 +219,12 @@ export default function HomePage() {
     justifyContent: 'flex-end',
   }));
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2}}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" sx={{flexGrow: 1}} component="div">
-            <GiAxeSword />
-            FSMMO
-          </Typography>
-          <Button color="inherit" onClick={() => Auth.logout()}>Logout</Button>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-          },
-        }}
-        // variant="persistent"
-        anchor="left"
-        open={open}
-      >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-        <Link to="/">
-          <ListItem button key="Home" onClick={handleDrawerClose}>
-            <ListItemIcon>
-              <HomeIcon />
-            </ListItemIcon>
-            <ListItemText primary="Home" />
-          </ListItem>
-        </Link>
-
-        <Link to="/walking">
-          <ListItem button key="Walk" onClick={handleDrawerClose}>
-            <ListItemIcon>
-              <WalkIcon />
-            </ListItemIcon>
-            <ListItemText primary="Walk" />
-          </ListItem>
-        </Link>
-
-        <Link to="/inventory">
-          <ListItem button key="Inventory" onClick={handleDrawerClose}>
-            <ListItemIcon>
-              <InventoryIcon />
-            </ListItemIcon>
-            <ListItemText primary="Inventory" />
-          </ListItem>
-        </Link>
-
-        </List>
-      </Drawer>
+      <ResponsiveDrawer />
       {loading ? <p>Loading...</p> :
-      <Main open={open}>
+      <Main sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
         <DrawerHeader />
         <Router>
           <Switch>

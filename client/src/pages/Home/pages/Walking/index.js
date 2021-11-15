@@ -94,15 +94,18 @@ export default function Walking({loading}) {
     return (
         <div>
             {loading ? <p>Loading...</p> : 
-            <Card sx={{ padding: 2, display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", textAlign: "center" }}>
+            <Box>
+            <Card sx={{ paddingY: 1, marginBottom: 1, display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", textAlign: "center"}}>
                 <Box sx={{ paddingBottom: 1 }}>
                     <Typography variant="h3">Walking</Typography>
                 </Box>
-                <Box sx={{ paddingBottom: 5 }}>
+                <Box>
                     <StepCounter steps={state?.steps} />
                 </Box>
-                <Box sx={{ height: 200, width: {xs: "90%", sm: "90%", md: "70%", lg: "50%"}, backgroundColor: "gray", borderRadius: 3 }}>
-                    <p>{state?.stepMessage}</p>
+            </Card>
+            <Card sx={{ padding: 2, display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", textAlign: "center" }}>
+                <Box sx={{ height: 200, width: {xs: "90%", sm: "90%", md: "70%", lg: "50%"}, backgroundColor: "#c2c2c2", borderRadius: 3 }}>
+                    <Typography sx={{paddingY: 5}}>{state?.stepMessage}</Typography>
                     {levelText ? 
                     <Typography sx={{fontWeight: "bold"}}>You reached level {levelText}!</Typography> 
                     : null}
@@ -123,6 +126,7 @@ export default function Walking({loading}) {
                     <LinearProgress variant="determinate" value={countDown} />
                 </Box>
             </Card>
+            </Box>
             }
         </div>
     )

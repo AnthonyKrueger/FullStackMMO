@@ -10,6 +10,7 @@ import { GET_USER } from "../../../../utils/queries"
 import Auth from "../../../../utils/auth";
 
 import ItemList from "./itemList"
+import { Card, Typography } from "@mui/material";
 
 export default function Inventory() {
 
@@ -36,10 +37,15 @@ export default function Inventory() {
 
 
     return (
-        <Box sx={{ paddingX: {sm: 0, lg:10} }}>
+        <Box>
+            <Card sx={{  paddingY: 1, marginBottom: 1, display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", textAlign: "center" }}>
+                <Typography variant="h3" sx={{ textAlign: "center" }}>Inventory</Typography>
+            </Card>
+            <Card sx={{ paddingX: { xs: 1, lg: 5 }, paddingY: 2}}>
                 {itemState !== undefined ?
                     <ItemList items={itemState} />
                     : null}
+            </Card>
         </Box>
     )
 }

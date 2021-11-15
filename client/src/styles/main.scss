@@ -104,7 +104,7 @@ Main {
         padding: 5px;
     }
     @include media('>=tablet') {        
-        justify-content: space-between;
+        justify-content: space-evenly;
         flex-direction: row;
     }
 }

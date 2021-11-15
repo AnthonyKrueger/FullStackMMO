@@ -6,6 +6,7 @@ import EnduranceIcon from '@mui/icons-material/Shield'
 import SpeedIcon from '@mui/icons-material/DirectionsRun'
 import { red, yellow, green, blue } from '@mui/material/colors';
 import { useSelector } from 'react-redux';
+import { Box } from '@mui/system';
 
 export default function Dashboard({ loading }) {
 
@@ -17,7 +18,7 @@ export default function Dashboard({ loading }) {
     <div>
     {loading ? <p>Loading...</p> :
     
-    <div>
+    <Box>
       <Card sx={{
         padding: 2,
         margin: 1
@@ -40,6 +41,14 @@ export default function Dashboard({ loading }) {
             <div>
               <Typography variant="h6"><CoinIcon sx={{ color: yellow[500], pt: 1 }} /> Gold: {state?.gold}</Typography>
             </div>
+          </div>
+
+      </Card>
+      <Card sx={{
+        padding: 2,
+        margin: 1
+      }}>
+                <div className="dashboardStats">
             <div>
               <Typography variant="h6"><StrengthIcon sx={{ color: yellow[700], pt: 1 }} /> Strength: {state?.strength}</Typography>
             </div>
@@ -50,8 +59,9 @@ export default function Dashboard({ loading }) {
               <Typography variant="h6"><SpeedIcon sx={{ color: blue[700], pt: 1 }} /> Speed: {state?.speed}</Typography>
             </div>
           </div>
+
       </Card>
-    </div>
+    </Box>
     }
     </div>
   )
