@@ -38,6 +38,17 @@ export const GET_USER = gql`
             nextStepTime
             levelPoints
             nextLevel
+            useritems {
+                id
+                quantity
+                item {
+                    name
+                    type
+                    level
+                    value
+                    stat
+                }
+            }
         }
     }
 `

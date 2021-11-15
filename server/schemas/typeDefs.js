@@ -18,6 +18,7 @@ const typeDefs = gql`
         nextStepTime: String
         levelPoints: Int
         nextLevel: Int
+        useritems: [UserItem]
     }
 
     type Item {
@@ -33,6 +34,8 @@ const typeDefs = gql`
         id: ID!
         userId: String
         itemId: String
+        item: Item
+        quantity: Int
     }
 
     type Step {
@@ -61,6 +64,7 @@ const typeDefs = gql`
         addUser(username: String!, email: String!, password: String!): Auth
         login(email: String!, password: String!): Auth
         takeStep(token: ID!): Step
+        sellItem(token: ID!, userItemId: ID!, quantity: Int!): User
     }
 `
 

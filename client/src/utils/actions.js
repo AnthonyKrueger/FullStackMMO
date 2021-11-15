@@ -1,2 +1,3 @@
 export const TAKE_STEP_ACTION = "TAKE_STEP_ACTION"
 export const SET_USER_DATA = "SET_USER_DATA"
+export const SELL_ITEM_ACTION = "SELL_ITEM_ACTION"

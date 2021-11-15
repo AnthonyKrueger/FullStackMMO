@@ -1,7 +1,7 @@
 const { AuthenticationError } = require('apollo-server-express');
 const { User, Item, UserItem} = require("../models")
 const { signToken, verifyUser } = require('../utils/auth');
-const {nextLevel, addExp, addGold, chooseStepEvent} = require("../utils/gameFunctions")
+const {nextLevel, addExp, addGold, chooseStepEvent, itemDrop} = require("../utils/gameFunctions")
 
 const resolvers = {
     Query: {
@@ -14,13 +14,16 @@ const resolvers = {
             const items = await Item.findAll({})
             return items;
         },
-        user: async (parent, {id}, context) => {
+        user: async (parent, {id}) => {
             const user = await User.findOne({
               where: {
                 id: id
-              }
+              },
+              include: [{
+                model: UserItem,
+                include:[Item]
+              }]
             })
-            console.log(context)
             return user;
         },
         me: async (parent, args, context) => {
@@ -63,6 +66,7 @@ const resolvers = {
       
             return { token, user };
           },
+          
           takeStep: async (parent, {token}) => {
             const data = await verifyUser(token)
             if(data) {
@@ -84,10 +88,7 @@ const resolvers = {
                   user.experience += addExp(user.level);
                 }
                 if(event.item) {
-                  const newItem = await UserItem.create({
-                    itemId: 1,
-                    userId: user.id
-                  })
+                  const newItem = await itemDrop(user)
                   const givenItem = await UserItem.findOne({
                     where: {
                       id: newItem.id
@@ -111,6 +112,53 @@ const resolvers = {
                 message = "You Must Wait to Take A Step!"
               }
               return ({gold: user.gold, nextLevel: user.nextLevel, experience: user.experience, level: user.level, levelPoints: user.levelPoints, message: message, item: itemLoot})
+            }
+            else {
+              throw new AuthenticationError('Invalid Token');
+            }
+          },
+
+          sellItem: async (parent, {token, userItemId, quantity}) => {
+            const userData = await verifyUser(token)
+            let goldGain = 0;
+            if(userData) {
+              const user = await User.findOne({
+                where: {
+                  id: userData.id
+                },
+                include: [{model: UserItem, include: [Item]}]
+              })
+              const userItem = await UserItem.findOne({
+                where: {
+                  userId: user.id,
+                  id: userItemId
+                },
+                include: [Item]
+              })
+              if(userItem !== null) {
+                if(userItem.quantity >= quantity) {
+                  userItem.quantity -= quantity
+                  goldGain += (userItem.item.value * quantity)
+                  user.gold += goldGain
+                  if(userItem.quantity > 0) {
+                    await userItem.save()
+                  }
+                  else {
+                    await userItem.destroy()
+                  }
+                  await user.save()
+                  return user;
+                }
+                else {
+                  throw new AuthenticationError('Quantity too High');
+                }
+              }
+              else {
+                throw new AuthenticationError('Invalid Item');
+              }
+            }
+            else {
+              throw new AuthenticationError('Invalid Token');
             }
           }
     }

@@ -13,6 +13,10 @@ const UserItem = sequelize.define('useritem', {
     },
     itemId: {
         type: Sequelize.INTEGER
+    },
+    quantity: {
+        type: Sequelize.INTEGER,
+        defaultValue: 1
     }
 }, {
     sequelize,

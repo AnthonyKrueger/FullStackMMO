@@ -14,7 +14,7 @@ const initialState = {
     maxHealth: 0,
     gold: 0,
     steps: 0,
-    stepMessage: ""
+    stepMessage: "Click Below to Take a Step!"
   };
 
 
