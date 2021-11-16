@@ -104,23 +104,13 @@ export default function Walking() {
             <Card sx={{ padding: 2, display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", textAlign: "center" }}>
                 <Box sx={{ height: 200, width: {xs: "90%", sm: "90%", md: "70%", lg: "50%"}, backgroundColor: "#c2c2c2", borderRadius: 3 }}>
                     <Typography sx={{paddingY: 5}}>{state?.stepMessage}</Typography>
-                    {levelText ? 
-                    <Typography sx={{fontWeight: "bold"}}>You reached level {levelText}!</Typography> 
-                    : null}
-                    {expText ? 
-                    <Typography>+{expText} <span className="expText">XP</span></Typography> 
-                    : null}
-                    {goldText ? 
-                    <div>
-                    <Typography>+{goldText} <span className="goldText">Gold</span></Typography> 
-                    </div>
-                    : null}
-                    {itemText ? 
-                    <Typography>You found a <strong>{itemText}</strong></Typography> 
-                    : null}
+                    <Typography sx={{fontWeight: "bold"}}>{levelText ? `You reached level ${levelText}!` : null }</Typography> 
+                    <Typography>{expText ? <span>+{expText}<span className="expText"> XP</span></span> : null}</Typography> 
+                    <Typography>{goldText ? <span>+{goldText} <span className="goldText">Gold</span></span>: null}</Typography>
+                    <Typography>{itemText ? <span>You found a <strong>{itemText}</strong></span> : null}</Typography>    
                 </Box>
                 <Box>
-                    <Button variant="contained" disabled={buttonState} onClick={() => stepClick()} sx={{paddingX: 5, marginBottom: 1, paddingY: 2, marginTop: 4}}>Take A Step</Button>
+                    <Button variant="contained" disabled={buttonState} onClick={stepClick} sx={{paddingX: 5, marginBottom: 1, paddingY: 2, marginTop: 4}}>Take A Step</Button>
                     <LinearProgress variant="determinate" value={countDown} />
                 </Box>
             </Card>
