@@ -6,7 +6,7 @@ import { TAKE_STEP_ACTION } from "../../../../utils/actions";
 import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux";
 
-export default function Walking({loading}) {
+export default function Walking() {
 
     const state = useSelector(state => {
         return state;
@@ -46,7 +46,6 @@ export default function Walking({loading}) {
     }, [countDown])
 
     async function stepClick() {
-        console.log(state)
         const { data } = await takeStep({
             variables: {token: token}
         })
@@ -58,20 +57,20 @@ export default function Walking({loading}) {
             setItemText("")
         }
         
-        if(data.takeStep.gold !== state.gold) {
-            setGoldText(`${data.takeStep.gold - state.gold}`)
+        if(data.takeStep.user.gold !== state.gold) {
+            setGoldText(`${data.takeStep.user.gold - state.gold}`)
         }
         else {
             setGoldText(null)
         }
 
-        if((data.takeStep.experience - state.experience) < 0) {
-            setLevelText(`${data.takeStep.level}`)
-            setExpText(`${data.takeStep.experience - state.experience + state.nextLevel}`)
+        if((data.takeStep.user.experience - state.experience) < 0) {
+            setLevelText(`${data.takeStep.user.level}`)
+            setExpText(`${data.takeStep.user.experience - state.experience + state.nextLevel}`)
         }
-        else if (data.takeStep.experience - state.experience !== 0) {
+        else if (data.takeStep.user.experience - state.experience !== 0) {
             setLevelText("")
-            setExpText(`${data.takeStep.experience - state.experience}`)
+            setExpText(`${data.takeStep.user.experience - state.experience}`)
         }
         else {
             setLevelText("")
@@ -82,7 +81,7 @@ export default function Walking({loading}) {
             setCountDown(0);
             setButtonState(true);
         }
-        dispatch({type: TAKE_STEP_ACTION, gold: data.takeStep.gold, nextLevel: data.takeStep.nextLevel, experience: data.takeStep.experience, level: data.takeStep.level, levelPoints: data.takeStep.levelPoints, stepMessage: data.takeStep.message})
+        dispatch({type: TAKE_STEP_ACTION, user: data.takeStep.user, message: data.takeStep.message})
     }
 
     function StepCounter({steps}) {
@@ -93,7 +92,6 @@ export default function Walking({loading}) {
 
     return (
         <div>
-            {loading ? <p>Loading...</p> : 
             <Box>
             <Card sx={{ paddingY: 1, marginBottom: 1, display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", textAlign: "center"}}>
                 <Box sx={{ paddingBottom: 1 }}>
@@ -127,7 +125,6 @@ export default function Walking({loading}) {
                 </Box>
             </Card>
             </Box>
-            }
         </div>
     )
 }

@@ -63,6 +63,16 @@ function chooseStepEvent() {
     return event;
 }
 
+async function levelUp(user) {
+    user.experience -= user.nextLevel
+    user.levelPoints += 1;
+    user.level += 1;
+    user.maxhealth += (user.level * 3)
+    user.health = user.maxhealth
+    user.nextLevel = nextLevel(user.level)
+    return user;
+}
+
 async function itemDrop(user) {
     const itemList = await Item.findAll()
     let rng = Math.floor(Math.random() * itemList.length)
@@ -91,5 +101,6 @@ module.exports = {
     addExp,
     addGold,
     chooseStepEvent,
-    itemDrop
+    itemDrop,
+    levelUp
 }

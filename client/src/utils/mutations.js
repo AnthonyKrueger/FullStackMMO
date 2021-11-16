@@ -27,13 +27,29 @@ export const CREATE_USER = gql`
 export const TAKE_STEP = gql`
     mutation takeStep($token: ID!) {
         takeStep(token: $token) {
-            experience
-            gold
-            message
-            level
-            levelPoints
-            nextLevel
+            user {
+                experience
+                gold
+                level
+                levelPoints
+                nextLevel
+                maxhealth
+                health
+                steps
+                useritems {
+                    id
+                    quantity
+                    item {
+                    name
+                    type
+                    level
+                    value
+                    stat
+                }
+                }
+            }
             item
+            message
         }
     }
 `
@@ -53,6 +69,17 @@ export const SELL_ITEM = gql `
                     stat
                 }
             }
+        }
+    }
+`
+
+export const LEVEL_SKILL = gql `
+    mutation levelSkill($token: ID!, $skill: String) {
+        levelSkill(token: $token, skill: $skill) {
+            strength
+            endurance
+            speed
+            levelPoints
         }
     }
 `

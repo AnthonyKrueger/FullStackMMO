@@ -22,26 +22,25 @@ const initialState = {
       switch(action.type) {
 
           case TAKE_STEP_ACTION:
-              let addedSteps = 1;
-              if(action.stepMessage === "You Must Wait to Take A Step!") {
-                  addedSteps = 0;
-              }
               return {
                   ...state,
-                  steps: state.steps + addedSteps,
-                  gold: action.gold,
-                  level: action.level,
-                  levelPoints: action.levelPoints,
-                  nextLevel: action.nextLevel,
-                  experience: action.experience,
-                  stepMessage: action.stepMessage
+                  level: action.user.level,
+                  levelPoints: action.user.levelPoints,
+                  experience: action.user.experience,
+                  health: action.user.health,
+                  maxhealth: action.user.maxhealth,
+                  gold: action.user.gold,
+                  steps: action.user.steps,
+                  useritems: action.user.useritems,
+                  stepMessage: action.message
               };
 
           case SET_USER_DATA:
-              return Object.assign({}, state, action.user)
+              return Object.assign({}, {...state}, action.user);
               
-              default:
-                  return state;
+            default:
+                return state
+                
                 };
         }
 
