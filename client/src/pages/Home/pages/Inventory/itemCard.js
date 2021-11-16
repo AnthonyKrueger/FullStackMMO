@@ -8,19 +8,14 @@ import CoinIcon from '@mui/icons-material/MonetizationOn'
 import { useMutation } from '@apollo/client';
 import { SELL_ITEM } from '../../../../utils/mutations';
 
-import { useDispatch } from "react-redux";
-import { SET_USER_DATA } from '../../../../utils/actions';
-
 import {GiBroadsword} from "react-icons/gi"
 import { Box } from "@mui/system";
 
-export default function ItemCard({item}) {
+export default function ItemCard({item, dispatch}) {
 
     const [sellItem] = useMutation(SELL_ITEM)
 
     const token = localStorage.getItem("id_token")
-
-    const dispatch = useDispatch()
 
     const handleSellClick = async(event) => {
         event.preventDefault()
@@ -35,7 +30,7 @@ export default function ItemCard({item}) {
         if (!data) {
             throw new Error('Something went wrong!');
           }
-          dispatch({type: SET_USER_DATA, user: data.sellItem})
+          dispatch(data.sellItem)
 
     }
 

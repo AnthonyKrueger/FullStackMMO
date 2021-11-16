@@ -1,7 +1,7 @@
 const { AuthenticationError } = require('apollo-server-express');
 const { User, Item, UserItem} = require("../models")
 const { signToken, verifyUser } = require('../utils/auth');
-const {nextLevel, addExp, addGold, chooseStepEvent, itemDrop} = require("../utils/gameFunctions")
+const {nextLevel, addExp, addGold, chooseStepEvent, itemDrop, levelUp} = require("../utils/gameFunctions")
 
 const resolvers = {
     Query: {
@@ -70,7 +70,7 @@ const resolvers = {
           takeStep: async (parent, {token}) => {
             const data = await verifyUser(token)
             if(data) {
-              const user = await User.findOne({
+              let user = await User.findOne({
                 where: {
                   id: data.id
                 },
@@ -98,20 +98,22 @@ const resolvers = {
                   itemLoot = `${givenItem.item.name} Level ${givenItem.item.level}`
                 }
                 if(user.experience >= user.nextLevel) {
-                  user.experience -= user.nextLevel
-                  user.levelPoints += 1;
-                  user.level += 1;
-                  user.nextLevel = nextLevel(user.level)
+                  user = await levelUp(user)
                 }
-
                 user.steps += 1;
                 user.nextStepTime = Date.now() + 3000
-                user.save()
+                await user.save()
               }
               else {
                 message = "You Must Wait to Take A Step!"
               }
-              return ({gold: user.gold, nextLevel: user.nextLevel, experience: user.experience, level: user.level, levelPoints: user.levelPoints, message: message, item: itemLoot})
+              const updatedUser = await User.findOne({
+                where: {
+                  id: user.id
+                },
+                include: [{model: UserItem, include: [Item]}]
+              })
+              return ({user: updatedUser, message: message, item: itemLoot})
             }
             else {
               throw new AuthenticationError('Invalid Token');
@@ -147,7 +149,13 @@ const resolvers = {
                     await userItem.destroy()
                   }
                   await user.save()
-                  return user;
+                  const updatedUser = await User.findOne({
+                    where: {
+                      id: userData.id
+                    },
+                    include: [{model: UserItem, include: [Item]}]
+                  })
+                  return updatedUser;
                 }
                 else {
                   throw new AuthenticationError('Quantity too High');
@@ -159,6 +167,29 @@ const resolvers = {
             }
             else {
               throw new AuthenticationError('Invalid Token');
+            }
+          },
+
+          levelSkill: async (parent, {token, skill}) => {
+            const userData = await verifyUser(token)
+            if(userData) {
+              const user = await User.findOne({
+                where: {
+                  id: userData.id
+                }
+              })
+              if(user.levelPoints > 0) {
+                user[skill] += 1;
+                user.levelPoints -= 1;
+                await user.save()
+                return user;
+              }
+              else {
+                throw new AuthenticationError('Not Enough Level Points')
+              }
+            }
+            else {
+              throw new AuthenticationError('Invalid Token')
             }
           }
     }

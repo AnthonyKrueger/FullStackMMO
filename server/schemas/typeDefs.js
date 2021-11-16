@@ -39,12 +39,8 @@ const typeDefs = gql`
     }
 
     type Step {
-        experience: Int
-        gold: Int
+        user: User
         message: String
-        level: Int
-        levelPoints: Int
-        nextLevel: Int
         item: String
     }
 
@@ -65,6 +61,7 @@ const typeDefs = gql`
         login(email: String!, password: String!): Auth
         takeStep(token: ID!): Step
         sellItem(token: ID!, userItemId: ID!, quantity: Int!): User
+        levelSkill( token: ID!, skill: String): User
     }
 `
 

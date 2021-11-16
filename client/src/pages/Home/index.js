@@ -145,14 +145,13 @@ function ResponsiveDrawer(props) {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },
@@ -223,18 +222,16 @@ function ResponsiveDrawer(props) {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <ResponsiveDrawer />
-      {loading ? <p>Loading...</p> :
       <Main sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
         <DrawerHeader />
         <Router>
           <Switch>
             <Route exact path='/' component={() => (<Dashboard loading={loading}/>)} />
-            <Route path='/walking' component={() => (<Walking loading={loading}/>)} />
-            <Route path='/inventory' component={() => (<Inventory/>)} />
+            <Route path='/walking' component={() => (<Walking />)} />
+            <Route path='/inventory' component={() => (<Inventory loading={loading}/>)} />
           </Switch>
       </Router>
       </Main>
-      }
     </Box>
   )
 }
